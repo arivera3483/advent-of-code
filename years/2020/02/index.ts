@@ -13,6 +13,8 @@ const DAY = 2;
 // problem url  : https://adventofcode.com/2020/day/2
 
 async function p2020day2_part1(input: string, ...params: any[]) {
+	const lines = input.split("\n");
+
 	return "Not implemented";
 }
 
@@ -28,12 +30,12 @@ async function run() {
 	test.beginTests();
 	await test.section(async () => {
 		for (const testCase of part1tests) {
-			test.logTestResult(testCase, String(await p2016day20_part1(testCase.input, ...(testCase.extraArgs || []))));
+			test.logTestResult(testCase, String(await p2020day2_part1(testCase.input, ...(testCase.extraArgs || []))));
 		}
 	});
 	await test.section(async () => {
 		for (const testCase of part2tests) {
-			test.logTestResult(testCase, String(await p2016day20_part2(testCase.input, ...(testCase.extraArgs || []))));
+			test.logTestResult(testCase, String(await p2020day2_part2(testCase.input, ...(testCase.extraArgs || []))));
 		}
 	});
 	test.endTests();

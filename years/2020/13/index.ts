@@ -28,12 +28,12 @@ async function run() {
 	test.beginTests();
 	await test.section(async () => {
 		for (const testCase of part1tests) {
-			test.logTestResult(testCase, String(await p2016day20_part1(testCase.input, ...(testCase.extraArgs || []))));
+			test.logTestResult(testCase, String(await p2020day13_part1(testCase.input, ...(testCase.extraArgs || []))));
 		}
 	});
 	await test.section(async () => {
 		for (const testCase of part2tests) {
-			test.logTestResult(testCase, String(await p2016day20_part2(testCase.input, ...(testCase.extraArgs || []))));
+			test.logTestResult(testCase, String(await p2020day13_part2(testCase.input, ...(testCase.extraArgs || []))));
 		}
 	});
 	test.endTests();
