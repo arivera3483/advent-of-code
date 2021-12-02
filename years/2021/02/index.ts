@@ -13,15 +13,54 @@ const DAY = 2;
 // problem url  : https://adventofcode.com/2021/day/2
 
 async function p2021day2_part1(input: string, ...params: any[]) {
-	const lines = input.split("\n").map((lines) => +lines.trim());
+	const lines = input.split("\n");
 
-	return "Not implemented";
+	var depth = 0, distance = 0;
+
+	for (const line of lines) {
+		var pline = line.split(" ");
+		var direction = pline[0];
+		var units: number = +pline[1];
+
+		switch(direction) {
+			case "forward":
+				distance += units;
+				break;
+			case "up":
+				depth -= units;
+				break;
+			case "down":
+				depth += units;
+		}
+	}
+
+	return distance*depth;
 }
 
 async function p2021day2_part2(input: string, ...params: any[]) {
-	const lines = input.split("\n").map((lines) => +lines.trim());
+	const lines = input.split("\n");
 
-	return "Not implemented";
+	var depth = 0, distance = 0, aim = 0;
+
+	for (const line of lines) {
+		var pline = line.split(" ");
+		var direction = pline[0];
+		var units: number = +pline[1];
+
+		switch(direction) {
+			case "forward":
+				distance += units;
+				depth = depth + (aim * units);
+				break;
+			case "up":
+				aim -= units;
+				break;
+			case "down":
+				aim += units;
+		}
+	}
+
+	return distance*depth;
 }
 
 async function run() {
