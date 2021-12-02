@@ -5,29 +5,18 @@ import chalk from "chalk";
 import { log, logSolution, trace } from "../../../util/log";
 import { performance } from "perf_hooks";
 
-const YEAR = 2020;
-const DAY = 3;
+const YEAR = 2021;
+const DAY = 5;
 
-// solution path: /home/adam/src/advent-of-code/years/2020/03/index.ts
-// data path    : /home/adam/src/advent-of-code/years/2020/03/data.txt
-// problem url  : https://adventofcode.com/2020/day/3
+// solution path: /home/adam/src/advent-of-code/years/2021/05/index.ts
+// data path    : /home/adam/src/advent-of-code/years/2021/05/data.txt
+// problem url  : https://adventofcode.com/2021/day/5
 
-async function p2020day3_part1(input: string, ...params: any[]) {
-	const lines = input.split("\n").map(String);
-	var count = 0;
-
-	for (var i =  0; i < lines.length; i++){
-		for (var j = 0; j < lines[i].length; j = j + 3){
-			if (lines[i].substring(j, j + 1) == "#") {
-				count++;
-			}
-		}
-	}
-
-	return count;
+async function p2021day5_part1(input: string, ...params: any[]) {
+	return "Not implemented";
 }
 
-async function p2020day3_part2(input: string, ...params: any[]) {
+async function p2021day5_part2(input: string, ...params: any[]) {
 	return "Not implemented";
 }
 
@@ -39,12 +28,12 @@ async function run() {
 	test.beginTests();
 	await test.section(async () => {
 		for (const testCase of part1tests) {
-			test.logTestResult(testCase, String(await p2020day3_part1(testCase.input, ...(testCase.extraArgs || []))));
+			test.logTestResult(testCase, String(await p2021day5_part1(testCase.input, ...(testCase.extraArgs || []))));
 		}
 	});
 	await test.section(async () => {
 		for (const testCase of part2tests) {
-			test.logTestResult(testCase, String(await p2020day3_part2(testCase.input, ...(testCase.extraArgs || []))));
+			test.logTestResult(testCase, String(await p2021day5_part2(testCase.input, ...(testCase.extraArgs || []))));
 		}
 	});
 	test.endTests();
@@ -53,14 +42,14 @@ async function run() {
 	const input = await util.getInput(DAY, YEAR);
 
 	const part1Before = performance.now();
-	const part1Solution = String(await p2020day3_part1(input));
+	const part1Solution = String(await p2021day5_part1(input));
 	const part1After = performance.now();
 
 	const part2Before = performance.now()
-	const part2Solution = String(await p2020day3_part2(input));
+	const part2Solution = String(await p2021day5_part2(input));
 	const part2After = performance.now();
 	
-	logSolution(3, 2020, part1Solution, part2Solution);
+	logSolution(5, 2021, part1Solution, part2Solution);
 
 	log(chalk.gray("--- Performance ---"));
 	log(chalk.gray(`Part 1: ${util.formatTime(part1After - part1Before)}`));
