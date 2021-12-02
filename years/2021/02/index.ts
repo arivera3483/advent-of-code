@@ -64,8 +64,16 @@ async function p2021day2_part2(input: string, ...params: any[]) {
 }
 
 async function run() {
-	const part1tests: TestCase[] = [];
-	const part2tests: TestCase[] = [];
+	const part1tests: TestCase[] = [{
+		input: `forward 5\ndown 5\nforward 8\nup 3\ndown 8\nforward 2`,
+		extraArgs: [],
+		expected: `150`
+	}];
+	const part2tests: TestCase[] = [{
+		input: `forward 5\ndown 5\nforward 8\nup 3\ndown 8\nforward 2`,
+		extraArgs: [],
+		expected: `900`
+	}];
 
 	// Run tests
 	test.beginTests();
