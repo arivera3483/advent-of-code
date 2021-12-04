@@ -13,16 +13,67 @@ const DAY = 3;
 // problem url  : https://adventofcode.com/2021/day/3
 
 async function p2021day3_part1(input: string, ...params: any[]) {
-	return "Not implemented";
+	const lines = input.split("\n");
+
+	let gamma = '';
+	let epsilon = '';
+
+	for (let i = 0; i < lines[0].length; i++) {
+		const ones = lines.map((number) => number[i] === '1').filter((bit) => bit);
+		if (ones.length >= lines.length / 2) {
+			gamma += '1';
+			epsilon += '0';
+		} else {
+			gamma += '0';
+			epsilon += '1';
+		}
+	}
+	return parseInt(gamma, 2) * parseInt(epsilon, 2);
 }
 
 async function p2021day3_part2(input: string, ...params: any[]) {
-	return "Not implemented";
+	const lines = input.split("\n");
+
+	let oxygensearch = lines;
+	let scrubbersearch = lines;
+	let idx = 0;
+
+	while(oxygensearch.length > 1 || scrubbersearch.length > 1) {
+		if (oxygensearch.length > 1) {
+			const ones = oxygensearch
+				.map((number) => number[idx] === '1')
+				.filter((bit) => bit);
+			oxygensearch = oxygensearch.filter(
+				(number) => 
+					number[idx] ===
+					(ones.length >= oxygensearch.length / 2 ? '1' : '0'));
+		}
+		if (scrubbersearch.length > 1) {
+			const ones = scrubbersearch
+				.map((number) => number[idx] === '1')
+				.filter((bit) => bit);
+			scrubbersearch = scrubbersearch.filter(
+				(number) =>
+					number[idx] ===
+					(ones.length >= scrubbersearch.length / 2 ? '0' : '1'));
+		}
+		idx++;
+	}
+
+	return parseInt(oxygensearch[0], 2) * parseInt(scrubbersearch[0], 2);
 }
 
 async function run() {
-	const part1tests: TestCase[] = [];
-	const part2tests: TestCase[] = [];
+	const part1tests: TestCase[] = [{
+		input: `00100\n11110\n10110\n10111\n10101\n01111\n00111\n11100\n10000\n11001\n00010\n01010`,
+		extraArgs: [],
+		expected: `198`
+	}];
+	const part2tests: TestCase[] = [{
+		input: `00100\n11110\n10110\n10111\n10101\n01111\n00111\n11100\n10000\n11001\n00010\n01010`,
+		extraArgs: [],
+		expected: `230`
+	}];
 
 	// Run tests
 	test.beginTests();
