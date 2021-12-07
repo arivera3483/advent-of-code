@@ -13,11 +13,37 @@ const DAY = 7;
 // problem url  : https://adventofcode.com/2021/day/7
 
 async function p2021day7_part1(input: string, ...params: any[]) {
-	return "Not implemented";
+	let crabsubs = input.split(",").map((number) => +number);
+	let minpos = util.min(crabsubs).value;
+	let maxpos = util.max(crabsubs).value;
+
+	let minmove = Number.MAX_VALUE;
+
+	for (let target = minpos; target <= maxpos; target++){
+		const moves = crabsubs.reduce((a, x) => a + Math.abs(x - target), 0);
+		minmove = Math.min(minmove, moves);
+	}
+
+	return minmove;
 }
 
 async function p2021day7_part2(input: string, ...params: any[]) {
-	return "Not implemented";
+	let crabsubs = input.split(",").map((number) => +number);
+	let minpos = util.min(crabsubs).value;
+	let maxpos = util.max(crabsubs).value;
+
+	let minmove = Number.MAX_VALUE;
+
+	for (let target = minpos; target <= maxpos; target++){
+		const moves = crabsubs.reduce((a, x) => {
+			const delta = Math.abs(x - target);
+			const fuel = delta * (delta + 1) / 2;
+			return a + fuel;
+		}, 0);
+		minmove = Math.min(minmove, moves);
+	}
+
+	return minmove;
 }
 
 async function run() {
@@ -26,7 +52,11 @@ async function run() {
 		extraArgs: [],
 		expected: `37`
 	}];
-	const part2tests: TestCase[] = [];
+	const part2tests: TestCase[] = [{
+		input: `16,1,2,0,4,2,7,1,2,14`,
+		extraArgs: [],
+		expected: `168`
+	}];
 
 	// Run tests
 	test.beginTests();
