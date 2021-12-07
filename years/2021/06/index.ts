@@ -12,12 +12,35 @@ const DAY = 6;
 // data path    : /home/adam/src/advent-of-code/years/2021/06/data.txt
 // problem url  : https://adventofcode.com/2021/day/6
 
+function updateFish(lanternfish: number[]){
+	for (let i = 0; i < lanternfish.length; i++){
+		if (lanternfish[i] == 0) {
+			lanternfish[i] = 6;
+			lanternfish.push(9);
+		} else {
+			lanternfish[i] -= 1;
+		}
+	}
+
+	return lanternfish;
+}
+
 async function p2021day6_part1(input: string, ...params: any[]) {
-	return "Not implemented";
+	let myfish = input.split(",").map((number) => +number);
+	let i = 0;
+	for (i; i < 80; i++){
+		updateFish(myfish);
+	}
+	return myfish.length;
 }
 
 async function p2021day6_part2(input: string, ...params: any[]) {
-	return "Not implemented";
+	let myfish = input.split(",").map((number) => +number);
+	let i = 0;
+	for (i; i < 256; i++){
+		updateFish(myfish);
+	}
+	return myfish.length;
 }
 
 async function run() {
@@ -26,7 +49,11 @@ async function run() {
 		extraArgs: [],
 		expected: `5934`
 	}];
-	const part2tests: TestCase[] = [];
+	const part2tests: TestCase[] = [{
+		input: `3,4,3,1,2`,
+		extraArgs: [],
+		expected: `26984457539`
+	}];
 
 	// Run tests
 	test.beginTests();
