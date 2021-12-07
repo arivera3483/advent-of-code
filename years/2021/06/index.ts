@@ -21,7 +21,11 @@ async function p2021day6_part2(input: string, ...params: any[]) {
 }
 
 async function run() {
-	const part1tests: TestCase[] = [];
+	const part1tests: TestCase[] = [{
+		input: `3,4,3,1,2`,
+		extraArgs: [],
+		expected: `5934`
+	}];
 	const part2tests: TestCase[] = [];
 
 	// Run tests
