@@ -36,11 +36,22 @@ async function p2021day6_part1(input: string, ...params: any[]) {
 
 async function p2021day6_part2(input: string, ...params: any[]) {
 	let myfish = input.split(",").map((number) => +number);
-	let i = 0;
-	for (i; i < 256; i++){
-		updateFish(myfish);
+	
+	const calendar = new Array(9);
+	calendar.fill(0);
+	myfish.forEach((i) => calendar[i]++);
+  
+	for (let i = 0; i < 256; i++) {
+	  const today = i % calendar.length;
+	  const breeders = calendar[today];
+	  // New babies breed in 9 days.
+	  calendar[(today + 9) % calendar.length] += breeders;
+	  // Adults breed again in 7 days.
+	  calendar[(today + 7) % calendar.length] += breeders;
+	  calendar[today] -= breeders;
 	}
-	return myfish.length;
+  
+	return calendar.reduce((accumulator, num) => accumulator + num);
 }
 
 async function run() {
