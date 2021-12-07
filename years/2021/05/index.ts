@@ -12,12 +12,41 @@ const DAY = 5;
 // data path    : /home/adam/src/advent-of-code/years/2021/05/data.txt
 // problem url  : https://adventofcode.com/2021/day/5
 
+const range = (a: number, b?: number, step = 1): number[] => {
+    const size = Math.ceil(b !== undefined ? (b - a) / step : a / step);
+    const offset = b !== undefined ? a : 0;
+    return [...Array(size).keys()].map(i => offset + i * step);
+};
+
+const scan = <T, X>(xs: Array<X>, seed: T, fn: (state: T, next: X) => T): T[] =>
+    xs.reduce((states, x) => states.concat([fn(states[states.length - 1], x)]), [seed]);
+
+const linePoints = ([[x1, y1], [x2, y2]]: number[][]): number[][] => {
+    const incx = x1 < x2 ? 1 : x1 > x2 ? -1 : 0;
+    const incy = y1 < y2 ? 1 : y1 > y2 ? -1 : 0;
+    const size = Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
+    return scan(range(size), [x1, y1], ([x, y]) => [x + incx, y + incy]);
+};
+
+const overlaps = (lines: number[][][]): number => {
+    const overlaps = new Map<string, number>();
+    const points = lines.flatMap(l => linePoints(l));
+    points.map(p => p.toString()).forEach(p => overlaps.set(p, (overlaps.get(p) || 0) + 1));
+    return Array.from(overlaps.values()).filter(x => x >= 2).length;
+};
+
 async function p2021day5_part1(input: string, ...params: any[]) {
-	return "Not implemented";
+	const lines = input.split("\n");
+	const linear = lines.map(l => l.split("->").map(p => p.split(",").map(x => parseInt(x))));
+	const straight = linear.filter(([[x1, y1], [x2, y2]]) => x1 === x2 || y1 === y2);
+	return overlaps(straight);
 }
 
 async function p2021day5_part2(input: string, ...params: any[]) {
-	return "Not implemented";
+	const lines = input.split("\n");
+	const linear = lines.map(l => l.split("->").map(p => p.split(",").map(x => parseInt(x))));
+	const straight = linear.filter(([[x1, y1], [x2, y2]]) => x1 === x2 || y1 === y2);
+	return overlaps(linear);
 }
 
 async function run() {
@@ -26,7 +55,11 @@ async function run() {
 		extraArgs: [],
 		expected: `5`
 	}];
-	const part2tests: TestCase[] = [];
+	const part2tests: TestCase[] = [{
+		input: `0,9 -> 5,9\n8,0 -> 0,8\n9,4 -> 3,4\n2,2 -> 2,1\n7,0 -> 7,4\n6,4 -> 2,0\n0,9 -> 2,9\n3,4 -> 1,4\n0,0 -> 8,8\n5,5 -> 8,2`,
+		extraArgs: [],
+		expected: `12`
+	}];
 
 	// Run tests
 	test.beginTests();
