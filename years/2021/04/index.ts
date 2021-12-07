@@ -13,32 +13,114 @@ const DAY = 4;
 // data path    : /home/adam/src/advent-of-code/years/2021/04/data.txt
 // problem url  : https://adventofcode.com/2021/day/4
 
+interface BoardNumber {
+    value: number;
+    drawn: boolean;
+}
+
+type Board = BoardNumber[][];
+
+function isBingo(board: Board): boolean {
+    search: for (let i = 0; i < 5; i++) {
+        if (board[i].findIndex((number) => !number.drawn) === -1) return true;
+        for (let j = 0; j < 5; j++) {
+            if (!board[j][i].drawn) continue search;
+        }
+        return true;
+    }
+    return false;
+}
+
+function allNotDrawn(board: Board): BoardNumber[] {
+    return board.flat(2).filter((number) => !number.drawn);
+}
+
+function draw(board: Board, value: number): void {
+    const match = board.flat(2).find((number) => number.value === value);
+    if (match) match.drawn = true;
+}
+
 async function p2021day4_part1(input: string, ...params: any[]) {
-	const groups = input.split("\n\n");
-	for (const group of groups) {
+	const groups = input.split("\r\n\r\n").map((item) => item.trim());
+	const boards: Board[] = [];
+	const numbers = groups[0].split(',').map((item) => +item.trim());
 
-		const numbers = group[0].split(',').map((item) => +item.trim());
+	for (const item of groups.slice(1)) {
+		boards.push(
+			item.split('\r\n').map((line) =>
+				line
+					.trim()
+					.split(/\s+/)
+					.map((number) => ({value: +number, drawn: false}))
+			)
+		);
+	}
 
-		const lines = group.split("\n");
-		for (const line of lines) {
-			
+	let firstResult: number | undefined;
+	let lastResult: number | undefined;
+
+	for (const number of numbers) {
+		const left = boards.filter((board) => !isBingo(board));
+		if (!left.length) break;
+		for (const board of left) {
+			draw(board, number);
+			if (isBingo(board)) {
+				const remainder = allNotDrawn(board);
+				lastResult = number * remainder.reduce((a, b) => a + b.value, 0);
+				if (firstResult === undefined) firstResult = lastResult;
+			}
 		}
 	}
 
-	return "Not implemented";
+	return firstResult;
 }
 
 async function p2021day4_part2(input: string, ...params: any[]) {
-	return "Not implemented";
+	const groups = input.split("\r\n\r\n").map((item) => item.trim());
+	const boards: Board[] = [];
+	const numbers = groups[0].split(',').map((item) => +item.trim());
+
+	for (const item of groups.slice(1)) {
+		boards.push(
+			item.split('\r\n').map((line) =>
+				line
+					.trim()
+					.split(/\s+/)
+					.map((number) => ({value: +number, drawn: false}))
+			)
+		);
+	}
+
+	let firstResult: number | undefined;
+	let lastResult: number | undefined;
+
+	for (const number of numbers) {
+		const left = boards.filter((board) => !isBingo(board));
+		if (!left.length) break;
+		for (const board of left) {
+			draw(board, number);
+			if (isBingo(board)) {
+				const remainder = allNotDrawn(board);
+				lastResult = number * remainder.reduce((a, b) => a + b.value, 0);
+				if (firstResult === undefined) firstResult = lastResult;
+			}
+		}
+	}
+
+	return lastResult;
 }
 
 async function run() {
 	const part1tests: TestCase[] = [{
-		input: `7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1\n\n22 13 17 11  0\n8  2 23  4 24\n21  9 14 16  7\n6 10  3 18  5\n1 12 20 15 19\n\n3 15  0  2 22\n9 18 13 17  5\n19  8  7 25 23\n20 11 10 24  4\n14 21 16 12  6\n\n14 21 17 24  4\n10 16 15  9 19\n18  8 23 26 20\n22 11 13  6  5\n\n2  0 12  3  7`,
+		input: `7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1\r\n\r\n22 13 17 11  0\r\n 8  2 23  4 24\r\n21  9 14 16  7\r\n 6 10  3 18  5\r\n 1 12 20 15 19\r\n\r\n 3 15  0  2 22\r\n 9 18 13 17  5\r\n19  8  7 25 23\r\n20 11 10 24  4\r\n14 21 16 12  6\r\n\r\n14 21 17 24  4\r\n10 16 15  9 19\r\n18  8 23 26 20\r\n22 11 13  6  5\r\n 2  0 12  3  7`,
 		extraArgs: [],
 		expected: `4512`
-	}];
-	const part2tests: TestCase[] = [];
+		}];
+	const part2tests: TestCase[] = [{
+		input: `7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1\r\n\r\n22 13 17 11  0\r\n 8  2 23  4 24\r\n21  9 14 16  7\r\n 6 10  3 18  5\r\n 1 12 20 15 19\r\n\r\n 3 15  0  2 22\r\n 9 18 13 17  5\r\n19  8  7 25 23\r\n20 11 10 24  4\r\n14 21 16 12  6\r\n\r\n14 21 17 24  4\r\n10 16 15  9 19\r\n18  8 23 26 20\r\n22 11 13  6  5\r\n 2  0 12  3  7`,
+		extraArgs: [],
+		expected: `1924`
+		}];
 
 	// Run tests
 	test.beginTests();
