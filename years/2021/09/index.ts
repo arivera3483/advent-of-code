@@ -32,7 +32,31 @@ function findLocalMinima(g: grid.Grid) {
 		}
 
 	return { localMinima, localMinimaCell };
+}
 
+function floodFill(g: grid.Grid, c: grid.Cell): number {
+	let size = 0;
+
+	if (+g.getCell(c.position)!.value === 9) {
+		return 1;
+	}
+	g.setCell(c.position, "9");
+	size = 1;
+
+	if (!g.getCell(c.position)?.isNorthEdge() && +g.getCell(c.position)!.north()!.value !== 9) {
+		size += floodFill(g, c.north()!);
+	}
+	if (!g.getCell(c.position)?.isEastEdge() && +g.getCell(c.position)!.east()!.value !== 9) {
+		size += floodFill(g, c.east()!);
+	}
+	if (!g.getCell(c.position)?.isWestEdge() && +g.getCell(c.position)!.west()!.value !== 9) {
+		size += floodFill(g, c.west()!);
+	}
+	if (!g.getCell(c.position)?.isSouthEdge() && +g.getCell(c.position)!.south()!.value !== 9) {
+		size += floodFill(g, c.south()!);
+	}
+
+	return size;
 }
 
 async function p2021day9_part1(input: string, ...params: any[]) {
@@ -46,10 +70,14 @@ async function p2021day9_part1(input: string, ...params: any[]) {
 
 async function p2021day9_part2(input: string, ...params: any[]) {
 	const g = new grid.Grid({ serialized: input });
-	const localmin = findLocalMinima(g).localMinima;
+	const localmin = findLocalMinima(g).localMinimaCell;
 
-	
-	return "Not implemented";
+	const sizes = localmin.map(i => floodFill(g, i));
+
+	const large3 = _.sortBy(sizes).slice(-3);
+	const result = _.reduce(large3, (a, b) => a * b);
+
+	return result;
 }
 
 async function run() {
