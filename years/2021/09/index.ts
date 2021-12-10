@@ -4,6 +4,7 @@ import * as test from "../../../util/test";
 import chalk from "chalk";
 import { log, logSolution, trace } from "../../../util/log";
 import { performance } from "perf_hooks";
+import * as grid from '../../../util/grid';
 
 const YEAR = 2021;
 const DAY = 9;
@@ -12,17 +13,64 @@ const DAY = 9;
 // data path    : /home/adam/src/advent-of-code/years/2021/09/data.txt
 // problem url  : https://adventofcode.com/2021/day/9
 
+function findLocalMinima(g: grid.Grid) {
+	const localMinima: number[] = [];
+	const localMinimaCell: grid.Cell[] = [];
+
+	for (const cell of g) {
+			let neighbors: number[] = [];
+			
+				if (
+					(+cell.isNorthEdge() || +cell.value < +cell.north()!.value) &&
+					(+cell.isEastEdge() || +cell.value < +cell.east()!.value) &&
+					(+cell.isWestEdge() || +cell.value < +cell.west()!.value) &&
+					(+cell.isSouthEdge() || +cell.value < +cell.south()!.value)
+				) {
+				localMinima.push(+cell.value);
+				localMinimaCell.push(cell);
+			}
+		}
+
+	return { localMinima, localMinimaCell };
+
+}
+
 async function p2021day9_part1(input: string, ...params: any[]) {
-	return "Not implemented";
+	const g = new grid.Grid({ serialized: input });
+	const localmin = findLocalMinima(g).localMinima;
+
+	const sum = _.sum(localmin) + localmin.length;
+	
+	return sum;
 }
 
 async function p2021day9_part2(input: string, ...params: any[]) {
+	const g = new grid.Grid({ serialized: input });
+	const localmin = findLocalMinima(g).localMinima;
+
+	
 	return "Not implemented";
 }
 
 async function run() {
-	const part1tests: TestCase[] = [];
-	const part2tests: TestCase[] = [];
+	const part1tests: TestCase[] = [{
+		input: `2199943210
+3987894921
+9856789892
+8767896789
+9899965678`,
+		extraArgs: [],
+		expected: `15`
+	}];
+	const part2tests: TestCase[] = [{
+		input: `2199943210
+3987894921
+9856789892
+8767896789
+9899965678`,
+		extraArgs: [],
+		expected: `1134`
+	}];
 
 	// Run tests
 	test.beginTests();
